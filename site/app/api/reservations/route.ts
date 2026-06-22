@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { tableId, name, phone, guests, date, time, comment } = body;
+    const { tableId, name, phone, guests, date, time, comment, utmSource, utmMedium, utmCampaign } = body;
 
     if (!tableId || !name || !phone || !guests || !date || !time) {
       return NextResponse.json({ error: "Заполните все обязательные поля" }, { status: 400 });
@@ -40,6 +40,9 @@ export async function POST(request: NextRequest) {
         date,
         time,
         comment: comment || null,
+        utmSource: utmSource || null,
+        utmMedium: utmMedium || null,
+        utmCampaign: utmCampaign || null,
       },
       include: { table: true },
     });

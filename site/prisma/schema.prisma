@@ -71,18 +71,21 @@ model Table {
 }
 
 model Reservation {
-  id        Int      @id @default(autoincrement())
-  tableId   Int
-  table     Table    @relation(fields: [tableId], references: [id], onDelete: Cascade)
-  name      String
-  phone     String
-  guests    Int
-  date      String
-  time      String
-  comment   String?
-  status    String   @default("CONFIRMED")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  tableId     Int
+  table       Table    @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  name        String
+  phone       String
+  guests      Int
+  date        String
+  time        String
+  comment     String?
+  status      String   @default("CONFIRMED")
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum OrderStatus {
@@ -107,6 +110,9 @@ model Order {
   pointsSpent  Int         @default(0)
   comment      String?
   items        OrderItem[]
+  utmSource    String?
+  utmMedium    String?
+  utmCampaign  String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -119,6 +125,23 @@ model OrderItem {
   dish     Dish  @relation(fields: [dishId], references: [id])
   quantity Int
   price    Int
+}
+
+model EventRequest {
+  id          Int      @id @default(autoincrement())
+  eventType   String
+  guests      String
+  date        String?
+  budget      String?
+  name        String
+  phone       String
+  comment     String?
+  status      String   @default("NEW")
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Setting {

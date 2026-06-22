@@ -83,7 +83,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto">
             <p className="text-accent font-medium tracking-wider uppercase text-sm">Как это работает</p>
-            <h2 className="mt-4 font-display text-4xl sm:text-5xl font-normal">QR-меню за три шага</h2>
+            <h2 className="mt-4 font-serif text-4xl sm:text-5xl font-normal">QR-меню за три шага</h2>
           </div>
 
           <div className="mt-16 grid md:grid-cols-3 gap-8">
@@ -112,11 +112,11 @@ export default function Home() {
                   <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-colors">
                     <step.icon className="w-7 h-7" />
                   </div>
-                  <span className="font-display text-5xl text-border group-hover:text-accent/20 transition-colors">
+                  <span className="font-serif text-5xl text-border group-hover:text-accent/20 transition-colors">
                     0{idx + 1}
                   </span>
                 </div>
-                <h3 className="mt-6 font-display text-2xl">{step.title}</h3>
+                <h3 className="mt-6 font-serif text-2xl">{step.title}</h3>
                 <p className="mt-3 text-muted leading-relaxed">{step.text}</p>
               </div>
             ))}
@@ -139,7 +139,7 @@ export default function Home() {
             </div>
             <div>
               <p className="text-accent font-medium tracking-wider uppercase text-sm">О кафе</p>
-              <h2 className="mt-4 font-display text-4xl sm:text-5xl font-normal leading-tight">
+              <h2 className="mt-4 font-serif text-4xl sm:text-5xl font-normal leading-tight">
                 Место, где хочется остаться
               </h2>
               <p className="mt-6 text-lg text-muted leading-relaxed">
@@ -171,7 +171,7 @@ export default function Home() {
       <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl bg-foreground text-white p-10 sm:p-16 text-center">
-            <h2 className="font-display text-4xl sm:text-5xl font-normal">Забронируйте стол</h2>
+            <h2 className="font-serif text-4xl sm:text-5xl font-normal">Забронируйте стол</h2>
             <p className="mt-4 text-white/70 max-w-xl mx-auto text-lg">
               Выберите подходящий стол на интерактивной карте зала и забронируйте по телефону.
             </p>
@@ -191,7 +191,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto">
             <p className="text-accent font-medium tracking-wider uppercase text-sm">Контакты</p>
-            <h2 className="mt-4 font-display text-4xl sm:text-5xl font-normal">Приходите в гости</h2>
+            <h2 className="mt-4 font-serif text-4xl sm:text-5xl font-normal">Приходите в гости</h2>
           </div>
 
           <div className="mt-16 grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -211,7 +211,7 @@ export default function Home() {
                 <div className="mx-auto w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                   <item.icon className="w-6 h-6" />
                 </div>
-                <h3 className="mt-5 font-display text-xl">{item.title}</h3>
+                <h3 className="mt-5 font-serif text-xl">{item.title}</h3>
                 {item.href ? (
                   <a
                     href={item.href}

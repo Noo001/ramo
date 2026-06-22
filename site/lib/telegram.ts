@@ -1,5 +1,36 @@
 import { prisma } from "./prisma";
 
+export async function sendTelegramMessage(text: string) {
+  const tokenSetting = await prisma.setting.findUnique({ where: { key: "telegramBotToken" } });
+  const chatIdSetting = await prisma.setting.findUnique({ where: { key: "telegramChatId" } });
+
+  if (!tokenSetting?.value || !chatIdSetting?.value) {
+    console.warn("Telegram settings not configured");
+    return;
+  }
+
+  const url = `https://api.telegram.org/bot${tokenSetting.value}/sendMessage`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatIdSetting.value,
+        text,
+        parse_mode: "HTML",
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("Telegram API error:", error);
+    }
+  } catch (error) {
+    console.error("Telegram send error:", error);
+  }
+}
+
 interface OrderWithItems {
   id: number;
   total: number;

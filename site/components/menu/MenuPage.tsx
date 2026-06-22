@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, X, Check, ArrowLeft, MapPin, ChevronDown, User } from "lucide-react";
+import { getUtmParams, getUtmBody } from "@/lib/utm";
 
 interface Category {
   id: number;
@@ -72,6 +73,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
   useEffect(() => {
     loadMenu();
     loadUser();
+    getUtmParams();
     if (isOrderMode) {
       loadTable(tableId);
     }
@@ -186,6 +188,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
         items,
         comment,
         pointsToSpend: user ? Math.min(pointsToSpend, maxPointsSpend) : 0,
+        ...getUtmBody(),
       }),
     });
 
@@ -225,7 +228,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <div className="text-center max-w-md">
-          <h1 className="font-display text-3xl mb-4">Ошибка загрузки</h1>
+          <h1 className="font-serif text-3xl mb-4">Ошибка загрузки</h1>
           <p className="text-muted">{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -245,7 +248,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
           <div className="mx-auto w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-6">
             <Check className="w-10 h-10 text-green-600" />
           </div>
-          <h1 className="font-display text-4xl font-normal">Заказ принят!</h1>
+          <h1 className="font-serif text-4xl font-normal">Заказ принят!</h1>
           <p className="mt-4 text-lg text-muted">
             Официант скоро подойдёт к вашему столу. Спасибо, что выбрали RAMO.
           </p>
@@ -280,7 +283,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
                 </span>
               </div>
             )}
-            {!isOrderMode && <h1 className="font-display text-xl">Меню</h1>}
+            {!isOrderMode && <h1 className="font-serif text-xl">Меню</h1>}
             <Link
               href={user ? "/profile" : "/auth-user"}
               className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground"
@@ -328,7 +331,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
           .filter((cat) => !activeCategory || cat.id === activeCategory)
           .map((category) => (
             <section key={category.id} className="mb-10">
-              <h2 className="font-display text-2xl mb-5">{category.name}</h2>
+              <h2 className="font-serif text-2xl mb-5">{category.name}</h2>
               <div className="space-y-4">
                 {category.dishes.map((dish) => (
                   <div
@@ -351,7 +354,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
                       )}
                     </div>
                     <div className="flex-1 min-w-0 flex flex-col">
-                      <h3 className="font-display text-lg sm:text-xl">{dish.name}</h3>
+                      <h3 className="font-serif text-lg sm:text-xl">{dish.name}</h3>
                       {dish.description && (
                         <p className="text-sm text-muted line-clamp-2 mt-1">{dish.description}</p>
                       )}
@@ -396,7 +399,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
           />
           <div data-testid="category-sheet" className="fixed bottom-0 left-0 right-0 z-50 bg-surface rounded-t-3xl shadow-2xl max-h-[70vh] overflow-hidden flex flex-col md:hidden">
             <div className="p-4 border-b border-border-light flex items-center justify-between">
-              <h2 className="font-display text-2xl">Категории</h2>
+              <h2 className="font-serif text-2xl">Категории</h2>
               <button
                 onClick={() => setShowCategorySheet(false)}
                 className="w-10 h-10 rounded-full bg-background-alt flex items-center justify-center text-muted hover:text-foreground"
@@ -436,7 +439,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
           />
           <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface rounded-t-3xl shadow-2xl max-h-[80vh] overflow-hidden flex flex-col">
             <div className="p-4 border-b border-border-light flex items-center justify-between">
-              <h2 className="font-display text-2xl">{isOrderMode ? "Ваш заказ" : "Ваша корзина"}</h2>
+              <h2 className="font-serif text-2xl">{isOrderMode ? "Ваш заказ" : "Ваша корзина"}</h2>
               <button
                 onClick={() => setShowCart(false)}
                 className="w-10 h-10 rounded-full bg-background-alt flex items-center justify-center text-muted hover:text-foreground"
@@ -529,7 +532,7 @@ export default function MenuPage({ tableId }: MenuPageProps) {
                   )}
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-muted">Итого</span>
-                    <span className="font-display text-2xl">{finalTotal} ₽</span>
+                    <span className="font-serif text-2xl">{finalTotal} ₽</span>
                   </div>
                   <button
                     onClick={sendOrder}

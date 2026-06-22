@@ -6,7 +6,7 @@ import { getUserAuth } from "@/lib/auth-user";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { tableId, items, comment, pointsToSpend } = body;
+    const { tableId, items, comment, pointsToSpend, utmSource, utmMedium, utmCampaign } = body;
 
     if (!tableId || !items || items.length === 0) {
       return NextResponse.json({ error: "Некорректный заказ" }, { status: 400 });
@@ -73,6 +73,9 @@ export async function POST(request: NextRequest) {
         pointsEarned,
         pointsSpent,
         comment: comment || null,
+        utmSource: utmSource || null,
+        utmMedium: utmMedium || null,
+        utmCampaign: utmCampaign || null,
         items: {
           create: orderItemsData,
         },

@@ -1,5 +1,7 @@
 import { PrismaClient, TableZone } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import fs from "fs";
+import path from "path";
 
 const prisma = new PrismaClient();
 
@@ -28,6 +30,10 @@ async function main() {
     tables.push({ id: tableId++, zone: TableZone.TERRACE, seats: 4 });
   }
 
+  await prisma.eventRequest.deleteMany({});
+  await prisma.orderItem.deleteMany({});
+  await prisma.order.deleteMany({});
+  await prisma.reservation.deleteMany({});
   await prisma.table.deleteMany({});
   await prisma.table.createMany({
     data: tables,
@@ -49,6 +55,45 @@ async function main() {
       update: {},
       create: setting,
     });
+  }
+
+  // Menu categories and dishes from seed-data.json
+  const seedDataPath = path.join(__dirname, "seed-data.json");
+  if (fs.existsSync(seedDataPath)) {
+    const categories = JSON.parse(fs.readFileSync(seedDataPath, "utf-8")) as {
+      name: string;
+      sortOrder: number;
+      dishes: {
+        name: string;
+        description: string | null;
+        price: number;
+        weight: string | null;
+        image: string | null;
+        isActive: boolean;
+        isStopListed: boolean;
+      }[];
+    }[];
+
+    await prisma.dish.deleteMany({});
+    await prisma.category.deleteMany({});
+
+    for (const category of categories) {
+      const createdCategory = await prisma.category.create({
+        data: {
+          name: category.name,
+          sortOrder: category.sortOrder,
+        },
+      });
+
+      if (category.dishes.length > 0) {
+        await prisma.dish.createMany({
+          data: category.dishes.map((dish) => ({
+            ...dish,
+            categoryId: createdCategory.id,
+          })),
+        });
+      }
+    }
   }
 
   console.log("Seed completed");

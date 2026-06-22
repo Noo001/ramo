@@ -4,9 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { SITE } from "@/lib/data";
 import { CheckCircle } from "lucide-react";
+import { getUtmBody } from "@/lib/utm";
 
 export default function Events() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     eventType: "",
     guests: "",
@@ -14,13 +16,35 @@ export default function Events() {
     budget: "",
     name: "",
     phone: "",
+    comment: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/event-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          ...getUtmBody(),
+        }),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        return;
+      }
+    } catch {
+      // fallback to WhatsApp
+    }
+
     const text = `Заявка на мероприятие в RAMO%0AТип: ${form.eventType}%0AГостей: ${form.guests}%0AДата: ${form.date}%0AБюджет: ${form.budget || "—"}%0AИмя: ${form.name}%0AТелефон: ${form.phone}`;
     window.open(`${SITE.social.whatsapp}?text=${text}`, "_blank");
     setSubmitted(true);
+    setLoading(false);
   };
 
   return (
@@ -132,24 +156,36 @@ export default function Events() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-foreground">Имя</label>
-                  <input
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="mt-1 w-full rounded-xl border border-border px-4 py-3 focus:border-accent focus:ring-1 focus:ring-accent outline-none"
-                  />
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground">Имя</label>
+                    <input
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="mt-1 w-full rounded-xl border border-border px-4 py-3 focus:border-accent focus:ring-1 focus:ring-accent outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground">Телефон</label>
+                    <input
+                      type="tel"
+                      required
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      className="mt-1 w-full rounded-xl border border-border px-4 py-3 focus:border-accent focus:ring-1 focus:ring-accent outline-none"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground">Телефон</label>
+                  <label className="block text-sm font-medium text-foreground">Комментарий</label>
                   <input
-                    type="tel"
-                    required
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    type="text"
+                    placeholder="Пожелания по меню, декору, времени"
+                    value={form.comment}
+                    onChange={(e) => setForm({ ...form, comment: e.target.value })}
                     className="mt-1 w-full rounded-xl border border-border px-4 py-3 focus:border-accent focus:ring-1 focus:ring-accent outline-none"
                   />
                 </div>
@@ -157,9 +193,10 @@ export default function Events() {
 
               <button
                 type="submit"
-                className="mt-6 w-full rounded-full bg-accent px-8 py-4 text-base font-medium text-white hover:bg-accent-dark transition-colors"
+                disabled={loading}
+                className="mt-6 w-full rounded-full bg-accent px-8 py-4 text-base font-medium text-white hover:bg-accent-dark transition-colors disabled:opacity-60"
               >
-                Отправить заявку
+                {loading ? "Отправка..." : "Отправить заявку"}
               </button>
             </form>
           )}

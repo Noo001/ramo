@@ -13,6 +13,8 @@ import {
   Settings,
   LogOut,
   Plus,
+  Users,
+  BarChart3,
   Save,
   Trash2,
   Edit2,
@@ -48,16 +50,6 @@ interface Table {
   isActive: boolean;
 }
 
-interface Order {
-  id: number;
-  status: string;
-  total: number;
-  comment: string | null;
-  createdAt: string;
-  table: Table;
-  items: { quantity: number; price: number; dish: { name: string } }[];
-}
-
 interface Reservation {
   id: number;
   tableId: number;
@@ -70,6 +62,38 @@ interface Reservation {
   comment: string | null;
   status: string;
   createdAt: string;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+}
+
+interface EventRequest {
+  id: number;
+  eventType: string;
+  guests: string;
+  date: string | null;
+  budget: string | null;
+  name: string;
+  phone: string;
+  comment: string | null;
+  status: string;
+  createdAt: string;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+}
+
+interface Order {
+  id: number;
+  status: string;
+  total: number;
+  comment: string | null;
+  createdAt: string;
+  table: Table;
+  items: { quantity: number; price: number; dish: { name: string } }[];
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
 }
 
 const zoneNames: Record<string, string> = {
@@ -96,12 +120,13 @@ const statusColors: Record<string, string> = {
 
 export default function AdminPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"menu" | "tables" | "reservations" | "orders" | "settings">("menu");
+  const [activeTab, setActiveTab] = useState<"menu" | "tables" | "reservations" | "orders" | "crm" | "analytics" | "settings">("menu");
   const [categories, setCategories] = useState<Category[]>([]);
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [eventRequests, setEventRequests] = useState<EventRequest[]>([]);
   const [settings, setSettings] = useState({
     telegramBotToken: "",
     telegramChatId: "",
@@ -119,12 +144,13 @@ export default function AdminPage() {
 
   const fetchData = async () => {
     try {
-      const [catRes, dishRes, tableRes, orderRes, reservationsRes, settingsRes] = await Promise.all([
+      const [catRes, dishRes, tableRes, orderRes, reservationsRes, eventRequestsRes, settingsRes] = await Promise.all([
         fetch("/api/admin/categories"),
         fetch("/api/admin/dishes"),
         fetch("/api/admin/tables"),
         fetch("/api/admin/orders"),
         fetch("/api/admin/reservations"),
+        fetch("/api/admin/event-requests"),
         fetch("/api/admin/settings"),
       ]);
 
@@ -133,12 +159,13 @@ export default function AdminPage() {
         return;
       }
 
-      const [cats, dishData, tableData, orderData, reservationsData, settingsData] = await Promise.all([
+      const [cats, dishData, tableData, orderData, reservationsData, eventRequestsData, settingsData] = await Promise.all([
         catRes.json(),
         dishRes.json(),
         tableRes.json(),
         orderRes.json(),
         reservationsRes.json(),
+        eventRequestsRes.json(),
         settingsRes.json(),
       ]);
 
@@ -147,6 +174,7 @@ export default function AdminPage() {
       setTables(tableData);
       setOrders(orderData);
       setReservations(reservationsData);
+      setEventRequests(eventRequestsData);
       setSettings({
         telegramBotToken: settingsData.telegramBotToken || "",
         telegramChatId: settingsData.telegramChatId || "",
@@ -221,6 +249,8 @@ export default function AdminPage() {
     { key: "tables", label: "Столы", icon: LayoutGrid },
     { key: "reservations", label: "Бронирования", icon: Calendar },
     { key: "orders", label: "Заказы", icon: ClipboardList },
+    { key: "crm", label: "CRM", icon: Users },
+    { key: "analytics", label: "Аналитика", icon: BarChart3 },
     { key: "settings", label: "Настройки", icon: Settings },
   ];
 
@@ -280,6 +310,12 @@ export default function AdminPage() {
         )}
         {activeTab === "orders" && (
           <OrdersTab orders={orders} onUpdateStatus={updateOrderStatus} />
+        )}
+        {activeTab === "crm" && (
+          <EventRequestsTab eventRequests={eventRequests} onUpdate={fetchData} showMessage={showMessage} />
+        )}
+        {activeTab === "analytics" && (
+          <AnalyticsTab orders={orders} reservations={reservations} eventRequests={eventRequests} />
         )}
         {activeTab === "settings" && (
           <SettingsTab
@@ -386,7 +422,7 @@ function MenuTab({
         onSubmit={handleSubmit}
         className="rounded-3xl bg-surface p-6 sm:p-8 shadow-sm border border-border-light"
       >
-        <h2 className="font-display text-2xl mb-6">
+        <h2 className="font-serif text-2xl mb-6">
           {editingDish ? "Редактировать блюдо" : "Добавить блюдо"}
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
@@ -587,7 +623,7 @@ function TablesTab({ tables, onUpdate }: { tables: Table[]; onUpdate: () => void
         onSubmit={handleSubmit}
         className="rounded-3xl bg-surface p-6 sm:p-8 shadow-sm border border-border-light"
       >
-        <h2 className="font-display text-2xl mb-6">Добавить стол</h2>
+        <h2 className="font-serif text-2xl mb-6">Добавить стол</h2>
         <div className="grid sm:grid-cols-4 gap-4">
           <input
             placeholder="Номер стола"
@@ -626,7 +662,7 @@ function TablesTab({ tables, onUpdate }: { tables: Table[]; onUpdate: () => void
       <div className="grid lg:grid-cols-3 gap-6">
         {["HALL1", "HALL2", "TERRACE"].map((zone) => (
           <div key={zone} className="rounded-3xl bg-surface p-6 shadow-sm border border-border-light">
-            <h3 className="font-display text-xl mb-4">{zoneNames[zone]}</h3>
+            <h3 className="font-serif text-xl mb-4">{zoneNames[zone]}</h3>
             <div className="grid grid-cols-3 gap-2">
               {(groupedTables[zone] || []).map((table) => (
                 <button
@@ -634,7 +670,7 @@ function TablesTab({ tables, onUpdate }: { tables: Table[]; onUpdate: () => void
                   onClick={() => generateQR(table)}
                   className="group rounded-xl border border-border p-3 text-center hover:border-accent hover:shadow-sm transition-all"
                 >
-                  <div className="font-display text-xl group-hover:text-accent transition-colors">
+                  <div className="font-serif text-xl group-hover:text-accent transition-colors">
                     {table.id}
                   </div>
                   <div className="text-xs text-muted">{table.seats} мест</div>
@@ -647,7 +683,7 @@ function TablesTab({ tables, onUpdate }: { tables: Table[]; onUpdate: () => void
 
       {qrCode && qrTable && (
         <div className="rounded-3xl bg-surface p-8 shadow-sm border border-border-light text-center">
-          <h3 className="font-display text-2xl mb-2">
+          <h3 className="font-serif text-2xl mb-2">
             QR-код: {zoneNames[qrTable.zone]}, стол {qrTable.id}
           </h3>
           <p className="text-muted mb-6">Отсканируйте, чтобы открыть меню стола</p>
@@ -680,7 +716,7 @@ function OrdersTab({ orders, onUpdateStatus }: { orders: Order[]; onUpdateStatus
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-3">
-                <h3 className="font-display text-xl">Заказ #{order.id}</h3>
+                <h3 className="font-serif text-xl">Заказ #{order.id}</h3>
                 <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusColors[order.status]}`}>
                   {statusNames[order.status] || order.status}
                 </span>
@@ -718,7 +754,7 @@ function OrdersTab({ orders, onUpdateStatus }: { orders: Order[]; onUpdateStatus
 
           <div className="mt-5 pt-4 border-t border-border-light flex items-center justify-between">
             <span className="text-muted">Итого</span>
-            <span className="font-display text-2xl">{order.total} ₽</span>
+            <span className="font-serif text-2xl">{order.total} ₽</span>
           </div>
         </div>
       ))}
@@ -784,7 +820,7 @@ function ReservationsTab({
         onSubmit={handleSubmit}
         className="rounded-3xl bg-surface p-6 sm:p-8 shadow-sm border border-border-light"
       >
-        <h2 className="font-display text-2xl mb-6">Новое бронирование</h2>
+        <h2 className="font-serif text-2xl mb-6">Новое бронирование</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <select
             value={form.tableId}
@@ -856,7 +892,7 @@ function ReservationsTab({
       </form>
 
       <div className="rounded-3xl bg-surface p-6 sm:p-8 shadow-sm border border-border-light">
-        <h2 className="font-display text-2xl mb-6">Бронирования</h2>
+        <h2 className="font-serif text-2xl mb-6">Бронирования</h2>
         {reservations.length === 0 ? (
           <p className="text-muted">Нет бронирований</p>
         ) : (
@@ -906,6 +942,218 @@ function ReservationsTab({
   );
 }
 
+const crmStatusNames: Record<string, string> = {
+  NEW: "Новая",
+  IN_PROGRESS: "В работе",
+  CLOSED: "Закрыта",
+  CANCELLED: "Отменена",
+};
+
+function EventRequestsTab({
+  eventRequests,
+  onUpdate,
+  showMessage,
+}: {
+  eventRequests: EventRequest[];
+  onUpdate: () => void;
+  showMessage: (msg: string) => void;
+}) {
+  const updateStatus = async (id: number, status: string) => {
+    const res = await fetch(`/api/admin/event-requests/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    if (res.ok) {
+      showMessage("Статус обновлён");
+      onUpdate();
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Удалить заявку?")) return;
+    const res = await fetch(`/api/admin/event-requests/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      showMessage("Заявка удалена");
+      onUpdate();
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-3xl bg-surface p-6 sm:p-8 shadow-sm border border-border-light">
+        <h2 className="font-serif text-2xl mb-6">Заявки на мероприятия</h2>
+        {eventRequests.length === 0 ? (
+          <p className="text-muted">Заявок пока нет</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left text-sm text-muted border-b border-border-light">
+                  <th className="pb-3 font-medium">Дата заявки</th>
+                  <th className="pb-3 font-medium">Тип</th>
+                  <th className="pb-3 font-medium">Гостей</th>
+                  <th className="pb-3 font-medium">Дата мероприятия</th>
+                  <th className="pb-3 font-medium">Бюджет</th>
+                  <th className="pb-3 font-medium">Имя</th>
+                  <th className="pb-3 font-medium">Телефон</th>
+                  <th className="pb-3 font-medium">Комментарий</th>
+                  <th className="pb-3 font-medium">UTM</th>
+                  <th className="pb-3 font-medium">Статус</th>
+                  <th className="pb-3 font-medium"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {eventRequests.map((req) => (
+                  <tr key={req.id} className="border-b border-border-light last:border-0">
+                    <td className="py-4 text-sm">
+                      {new Date(req.createdAt).toLocaleString("ru-RU")}
+                    </td>
+                    <td className="py-4">{req.eventType}</td>
+                    <td className="py-4">{req.guests}</td>
+                    <td className="py-4">{req.date ? req.date.split("-").reverse().join(".") : "—"}</td>
+                    <td className="py-4">{req.budget || "—"}</td>
+                    <td className="py-4">{req.name}</td>
+                    <td className="py-4">{req.phone}</td>
+                    <td className="py-4 text-muted max-w-xs truncate">{req.comment || "—"}</td>
+                    <td className="py-4 text-xs text-muted">
+                      {req.utmSource || req.utmMedium || req.utmCampaign ? (
+                        <div className="space-y-0.5">
+                          {req.utmSource && <div>source: {req.utmSource}</div>}
+                          {req.utmMedium && <div>medium: {req.utmMedium}</div>}
+                          {req.utmCampaign && <div>campaign: {req.utmCampaign}</div>}
+                        </div>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                    <td className="py-4">
+                      <select
+                        value={req.status}
+                        onChange={(e) => updateStatus(req.id, e.target.value)}
+                        className="rounded-xl border border-border px-3 py-2 text-sm outline-none focus:border-accent bg-background"
+                      >
+                        {Object.entries(crmStatusNames).map(([key, label]) => (
+                          <option key={key} value={key}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="py-4 text-right">
+                      <button
+                        onClick={() => handleDelete(req.id)}
+                        className="p-2 rounded-full hover:bg-red-50 text-red hover:text-red/80"
+                        title="Удалить"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AnalyticsTab({
+  orders,
+  reservations,
+  eventRequests,
+}: {
+  orders: Order[];
+  reservations: Reservation[];
+  eventRequests: EventRequest[];
+}) {
+  type ChannelRow = { source: string; orders: number; ordersSum: number; reservations: number; events: number };
+
+  const channels = new Map<string, ChannelRow>();
+
+  const touch = (source: string | null | undefined) => {
+    const key = source?.trim() || "organic / direct";
+    if (!channels.has(key)) {
+      channels.set(key, { source: key, orders: 0, ordersSum: 0, reservations: 0, events: 0 });
+    }
+    return channels.get(key)!;
+  };
+
+  orders.forEach((order) => {
+    const row = touch(order.utmSource);
+    row.orders += 1;
+    row.ordersSum += order.total;
+  });
+
+  reservations.forEach((reservation) => {
+    touch(reservation.utmSource).reservations += 1;
+  });
+
+  eventRequests.forEach((req) => {
+    touch(req.utmSource).events += 1;
+  });
+
+  const rows = Array.from(channels.values()).sort((a, b) => b.ordersSum - a.ordersSum);
+  const totalOrdersSum = orders.reduce((sum, o) => sum + o.total, 0);
+
+  return (
+    <div className="space-y-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="rounded-3xl bg-surface p-6 shadow-sm border border-border-light">
+          <p className="text-sm text-muted">Заказов</p>
+          <p className="mt-2 font-serif text-3xl">{orders.length}</p>
+        </div>
+        <div className="rounded-3xl bg-surface p-6 shadow-sm border border-border-light">
+          <p className="text-sm text-muted">Выручка</p>
+          <p className="mt-2 font-serif text-3xl">{totalOrdersSum.toLocaleString("ru-RU")} ₽</p>
+        </div>
+        <div className="rounded-3xl bg-surface p-6 shadow-sm border border-border-light">
+          <p className="text-sm text-muted">Бронирований</p>
+          <p className="mt-2 font-serif text-3xl">{reservations.length}</p>
+        </div>
+        <div className="rounded-3xl bg-surface p-6 shadow-sm border border-border-light">
+          <p className="text-sm text-muted">Заявок на мероприятия</p>
+          <p className="mt-2 font-serif text-3xl">{eventRequests.length}</p>
+        </div>
+      </div>
+
+      <div className="rounded-3xl bg-surface p-6 sm:p-8 shadow-sm border border-border-light">
+        <h2 className="font-serif text-2xl mb-6">Аналитика по каналам (UTM source)</h2>
+        {rows.length === 0 ? (
+          <p className="text-muted">Нет данных</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left text-sm text-muted border-b border-border-light">
+                  <th className="pb-3 font-medium">Канал</th>
+                  <th className="pb-3 font-medium">Заказы</th>
+                  <th className="pb-3 font-medium">Выручка</th>
+                  <th className="pb-3 font-medium">Бронирования</th>
+                  <th className="pb-3 font-medium">Заявки</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.source} className="border-b border-border-light last:border-0">
+                    <td className="py-4 font-medium">{row.source}</td>
+                    <td className="py-4">{row.orders}</td>
+                    <td className="py-4">{row.ordersSum.toLocaleString("ru-RU")} ₽</td>
+                    <td className="py-4">{row.reservations}</td>
+                    <td className="py-4">{row.events}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function SettingsTab({
   settings,
   onChange,
@@ -939,7 +1187,7 @@ function SettingsTab({
             <QrCode className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-display text-2xl">Telegram уведомления</h2>
+            <h2 className="font-serif text-2xl">Telegram уведомления</h2>
             <p className="text-sm text-muted">Заказы будут приходить в чат</p>
           </div>
         </div>
@@ -995,7 +1243,7 @@ function SettingsTab({
 
         <div className="mt-6 pt-6 border-t border-border-light space-y-4">
           <div>
-            <h3 className="font-display text-lg mb-1">Программа лояльности</h3>
+            <h3 className="font-serif text-lg mb-1">Программа лояльности</h3>
             <p className="text-sm text-muted">Настройте начисление и списание баллов</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -1039,7 +1287,7 @@ function SettingsTab({
             <RefreshCw className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-display text-2xl">Синхронизация с iiko</h2>
+            <h2 className="font-serif text-2xl">Синхронизация с iiko</h2>
             <p className="text-sm text-muted">Обновить меню и стоп-лист</p>
           </div>
         </div>

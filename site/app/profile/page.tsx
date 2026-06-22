@@ -61,7 +61,7 @@ export default function ProfilePage() {
 
         <div className="bg-foreground text-white rounded-2xl p-6 mb-6">
           <p className="text-white/70 text-sm">Баллы лояльности</p>
-          <p className="font-display text-4xl mt-1">{user.points.toLocaleString("ru-RU")}</p>
+          <p className="font-serif text-4xl mt-1">{user.points.toLocaleString("ru-RU")}</p>
           <p className="text-white/60 text-sm mt-2">1 балл = 1 ₽</p>
         </div>
 

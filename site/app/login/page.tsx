@@ -50,7 +50,7 @@ export default function LoginPage() {
         </div>
 
         <div className="rounded-3xl bg-surface p-8 shadow-lg border border-border-light">
-          <h1 className="font-display text-2xl text-center">Вход</h1>
+          <h1 className="font-serif text-2xl text-center">Вход</h1>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <div>

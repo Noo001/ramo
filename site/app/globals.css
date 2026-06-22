@@ -70,7 +70,6 @@
   --color-red: var(--red);
   --font-sans: "Geist", system-ui, sans-serif;
   --font-serif: "Libertinus Serif", Georgia, serif;
-  --font-display: "FRB American Cursive", "Geist", cursive;
 }
 
 body {

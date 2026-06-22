@@ -28,7 +28,7 @@ test("регистрация, заказ и начисление баллов л
   // Refresh profile and check points increased
   await page.goto("/profile");
   await expect(page.locator("text=Баллы лояльности")).toBeVisible();
-  const pointsText = await page.locator(".font-display.text-4xl").textContent();
+  const pointsText = await page.locator(".font-serif.text-4xl").textContent();
   const points = Number(pointsText?.replace(/\s/g, ""));
   expect(points).toBeGreaterThan(0);
 });

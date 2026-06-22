@@ -1,0 +1,475 @@
+[
+  {
+    "name": "Выбор пользователей",
+    "sortOrder": 1,
+    "dishes": []
+  },
+  {
+    "name": "Завтраки",
+    "sortOrder": 2,
+    "dishes": [
+      {
+        "name": "Сэндвич с тунцом и маринованным яйцом",
+        "description": null,
+        "price": 910,
+        "weight": "452 г",
+        "image": "/images/menu/dish_12.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Омлет с креветками",
+        "description": null,
+        "price": 663,
+        "weight": "264 г",
+        "image": "/images/menu/dish_8.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Английский завтрак",
+        "description": null,
+        "price": 806,
+        "weight": "555 г",
+        "image": "/images/menu/dish_9.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Хашбрауны с беконом и халапеньо",
+        "description": null,
+        "price": 403,
+        "weight": "287 г",
+        "image": "/images/menu/dish_10.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Сырники с маковым кремом",
+        "description": null,
+        "price": 585,
+        "weight": "262 г",
+        "image": "/images/menu/dish_11.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Роти с семгой",
+        "description": null,
+        "price": 741,
+        "weight": "140 г",
+        "image": "/images/menu/dish_13.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Рамен",
+    "sortOrder": 3,
+    "dishes": [
+      {
+        "name": "Рамен с креветками",
+        "description": "Пикантный куриный бульон с добавлением специй и имбиря, яйцо, креветки, домашняя лапша, микрозелень, корень лотоса, маринованный бамбук, нори, грибы шиитаке",
+        "price": 1000,
+        "weight": "500 г",
+        "image": "/images/menu/dish_14.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Рамен со свиной грудинкой",
+        "description": "Наваристый свиной бульон. Рулет свиной карамелизированный в терияки, маринованное яйцо, капуста бок-чой, маринованный корень лотоса, маринованный бамбук, микрозелень, грибы шиитаке, лапша домашняя, нори",
+        "price": 1000,
+        "weight": "500 г",
+        "image": "/images/menu/dish_15.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Горячие закуски",
+    "sortOrder": 4,
+    "dishes": [
+      {
+        "name": "Попкорн из креветок",
+        "description": null,
+        "price": 715,
+        "weight": "80 г",
+        "image": "/images/menu/dish_16.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Батат Фри с трюфельным айоли",
+        "description": null,
+        "price": 533,
+        "weight": "180 г",
+        "image": "/images/menu/dish_17.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Картофель Фри с пармезаном",
+        "description": "Рифленый картофель, посыпанный пармезаном",
+        "price": 455,
+        "weight": "80 г",
+        "image": "/images/menu/dish_18.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Куриные стрипсы с чесночным айоли",
+        "description": null,
+        "price": 585,
+        "weight": "200 г",
+        "image": "/images/menu/dish_19.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Салаты",
+    "sortOrder": 5,
+    "dishes": [
+      {
+        "name": "Греческий с печеным перцем и копчеными оливками",
+        "description": "Легкий салат из томатов черри, печеного болгарского перца, сыра сиртаки с добавлением оливок, маринованных в прованских травах",
+        "price": 715,
+        "weight": "250 г",
+        "image": "/images/menu/dish_21.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Теплый салат с баклажаном",
+        "description": null,
+        "price": 611,
+        "weight": "300 г",
+        "image": "/images/menu/dish_20.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Салат с креветкой и персиком в апельсиновой заправке",
+        "description": null,
+        "price": 910,
+        "weight": "310 г",
+        "image": "/images/menu/dish_22.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Салат с ростбифом в медово-горчичной заправке с песто из петрушки",
+        "description": null,
+        "price": 780,
+        "weight": "300 г",
+        "image": "/images/menu/dish_23.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Супы",
+    "sortOrder": 6,
+    "dishes": [
+      {
+        "name": "Борщ со смальцем и печеным чесноком",
+        "description": "Густой наваристый борщ на говяжьем бульоне с кусочками говядины. Со смальцем - намазкой для хлеба из перекрученного сала с чесноком и перцем. Поджаренный хлеб, запеченный чеснок, горчица, сметана.",
+        "price": 767,
+        "weight": "400 г",
+        "image": "/images/menu/dish_26.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Бун рьеу с томлеными щечками",
+        "description": "Вьетнамский суп в новой интерпретации. Говяжий бульон, томленые щечки и домашняя лапша.",
+        "price": 598,
+        "weight": "380 г",
+        "image": "/images/menu/dish_24.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Домашняя куриная суп-лапша",
+        "description": "Наваристый куриный бульон, домашняя лапша, зелень, перепелиные яйца и куриная грудка",
+        "price": 490,
+        "weight": "300 г",
+        "image": "/images/menu/dish_25.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Горячие блюда",
+    "sortOrder": 7,
+    "dishes": [
+      {
+        "name": "Индейка с печеными овощами и томатной сальсой",
+        "description": "Горячее блюдо «Индейка с печёными овощами и томатной сальсой» - идеальный выбор для сытного обеда или ужина! Сочное филе индейки, дополненное ароматными печёными овощами и яркой томатной сальсой, порадует вас своим насыщенным вкусом и пользой. Попробуйте и оцените гармонию вкусов!",
+        "price": 871,
+        "weight": "360 г",
+        "image": "/images/menu/dish_27.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Рулетик из судака с двумя соусами и картофельными чипсами",
+        "description": "Филе судака, запеченное со сливочным маслом, соус томатный на основе томата в собственном соку с печеным перцем, песто из петрушки с добавлением грецкого ореха, бланшированного брокколи, картофельные чипсы, зеленый лук",
+        "price": 845,
+        "weight": "300 г",
+        "image": "/images/menu/dish_28.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Сатай из говядины с тонкацу глейзом и морковным пюре",
+        "description": null,
+        "price": 1235,
+        "weight": "270 г",
+        "image": "/images/menu/dish_29.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Соусы",
+    "sortOrder": 8,
+    "dishes": [
+      {
+        "name": "Томатный соус",
+        "description": null,
+        "price": 120,
+        "weight": "50 г",
+        "image": "/images/menu/dish_30.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Томатная сальса",
+        "description": null,
+        "price": 120,
+        "weight": "50 г",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Трюфельный айоли",
+        "description": null,
+        "price": 120,
+        "weight": "50 г",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Сливочно-перечный",
+        "description": null,
+        "price": 120,
+        "weight": "50 г",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Манго-кунжутный айоли",
+        "description": null,
+        "price": 120,
+        "weight": "50 г",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Хлеб",
+    "sortOrder": 9,
+    "dishes": [
+      {
+        "name": "Лепешка роти",
+        "description": null,
+        "price": 120,
+        "weight": "80 г",
+        "image": "/images/menu/dish_35.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Льняной ",
+        "description": null,
+        "price": 160,
+        "weight": "150 г",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Десерты",
+    "sortOrder": 10,
+    "dishes": [
+      {
+        "name": "Творожные пончики",
+        "description": "Пончики из творога с цедрой апельсина жареные",
+        "price": 585,
+        "weight": "200 г",
+        "image": "/images/menu/dish_38.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Апероль баба с сырным кремом",
+        "description": "Новое видение классической ром бабы, цитрусовый сироп с аперолем, с сырным кремом на основе творожного сыра, сахарной пудры и цедры лайма, посыпается фисташковой крошкой",
+        "price": 585,
+        "weight": "120 г",
+        "image": "/images/menu/dish_37.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Японский бисквит",
+        "description": null,
+        "price": 585,
+        "weight": "150 г",
+        "image": "/images/menu/dish_39.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Бургеры",
+    "sortOrder": 11,
+    "dishes": [
+      {
+        "name": "Смеш-бургер",
+        "description": "Смеш-бургер (смеш — разновидность бургера, где котлета готовится путем сильного придавливания прессом), две котлеты из фарша мраморной говядины, сыр чеддер, медово-горчичный соус, луковый джем, салат айсберг, маринованный огурчик",
+        "price": 1027,
+        "weight": "450 г",
+        "image": "/images/menu/dish_41.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Бургер с томленой уткой",
+        "description": "Булочка бриошь, рваная утка томленая в вине, шпинат, трюфельный айоли, лук фри\r\n\r\n",
+        "price": 715,
+        "weight": "380 г",
+        "image": "/images/menu/dish_40.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Закуски",
+    "sortOrder": 12,
+    "dishes": [
+      {
+        "name": "Маринованные оливки гриль",
+        "description": "Оливки-гиганты без косточки, ароматное масло с прованскими травами,тимьяном,цедрой лимона",
+        "price": 325,
+        "weight": "50 г",
+        "image": "/images/menu/dish_42.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Вителло тоннато",
+        "description": null,
+        "price": 936,
+        "weight": "140 г",
+        "image": "/images/menu/dish_43.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Винная тарелка",
+        "description": null,
+        "price": 884,
+        "weight": "170 г",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Маринованные огурцы",
+        "description": null,
+        "price": 195,
+        "weight": "80 г",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  },
+  {
+    "name": "Напитки",
+    "sortOrder": 13,
+    "dishes": [
+      {
+        "name": "Вода Maruha ",
+        "description": null,
+        "price": 330,
+        "weight": "500 мл",
+        "image": "/images/menu/dish_46.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Сок Il Primo",
+        "description": null,
+        "price": 330,
+        "weight": "200 мл",
+        "image": "/images/menu/dish_47.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Coca-Cola ",
+        "description": null,
+        "price": 350,
+        "weight": "330 мл",
+        "image": "/images/menu/dish_48.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Клубника-красный базилик ",
+        "description": "Яркие ягоды клубники сочетаются с нежной кислинкой лимона, а свежий аромат базилика придает этому миксу особую изысканность.\r\nКлубника раскрывает свою сладость, а базилик нежно пряный, но не навязчивый, дарит удивительное послевкусие.\r\nИдеальный напиток для тех, кто ценит необычный сочетания и ищет гармонию в простоте.\r\n",
+        "price": 510,
+        "weight": "400 мл",
+        "image": "/images/menu/dish_49.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Лимонад Манго-Маракуйя",
+        "description": "С первой капли манго дарит свою сочную сладость, маракуйя вступает в игру с её яркой, слегка кисловатой свежестью, с сочетанием алое - его легкая, травяная нотка придает напитку невообразимую легкость и сбалансированность, создавая ощущение, что ты пьешь не просто лимонад, а напиток, который не только утоляет жажду, но и восстанавливает гармонию внутри",
+        "price": 510,
+        "weight": "400 мл",
+        "image": "/images/menu/dish_50.jpeg",
+        "isActive": true,
+        "isStopListed": false
+      },
+      {
+        "name": "Яблоко-Ваниль-Лемонграсс",
+        "description": "Сочетание яблоко и лемонграсса - это глоток хрустящей свежести. Сладкая сочность спелого яблока и тонкими гранями ванили встречаются с яркой цитрусово-травяной искрой лемонграсса. Легкий, бодрящий и ароматный, смешанный напиток напоминает утренний бриз в саду после дождя.",
+        "price": 510,
+        "weight": "400 мл",
+        "image": null,
+        "isActive": true,
+        "isStopListed": false
+      }
+    ]
+  }
+]

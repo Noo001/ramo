@@ -108,7 +108,7 @@ export default function FloorMapPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <div className="text-center max-w-md">
-          <h1 className="font-display text-3xl mb-4">Ошибка загрузки</h1>
+          <h1 className="font-serif text-3xl mb-4">Ошибка загрузки</h1>
           <p className="text-muted">{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -131,7 +131,7 @@ export default function FloorMapPage() {
           >
             ← На главную
           </Link>
-          <h1 className="font-display text-5xl sm:text-6xl font-normal">Карта зала</h1>
+          <h1 className="font-serif text-5xl sm:text-6xl font-normal">Карта зала</h1>
           <p className="mt-4 text-lg text-muted max-w-xl mx-auto">
             Выберите дату и свободный стол. Занятые столы отмечены красным.
           </p>
@@ -158,7 +158,7 @@ export default function FloorMapPage() {
               className={`rounded-3xl bg-gradient-to-b ${zoneColors[zone]} border p-6 sm:p-8`}
             >
               <div className="text-center mb-6">
-                <h2 className="font-display text-2xl">{zoneNames[zone]}</h2>
+                <h2 className="font-serif text-2xl">{zoneNames[zone]}</h2>
                 <p className="text-sm text-muted">{zoneDescriptions[zone]}</p>
               </div>
 
@@ -179,7 +179,7 @@ export default function FloorMapPage() {
                       disabled={!table.isActive || reserved}
                     >
                       <div
-                        className={`font-display text-2xl transition-colors ${
+                        className={`font-serif text-2xl transition-colors ${
                           reserved ? "text-red-500" : "group-hover:text-accent"
                         }`}
                       >
@@ -208,7 +208,7 @@ export default function FloorMapPage() {
                 {zoneNames[selectedTable.zone]}, стол {selectedTable.id}
               </span>
             </div>
-            <h2 className="mt-3 font-display text-3xl sm:text-4xl">Стол свободен</h2>
+            <h2 className="mt-3 font-serif text-3xl sm:text-4xl">Стол свободен</h2>
             <p className="mt-3 text-white/70">
               {selectedTable.seats} места · {selectedDate ? `на ${selectedDate.split("-").reverse().join(".")}` : ""}
             </p>

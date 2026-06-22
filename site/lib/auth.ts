@@ -58,3 +58,8 @@ export async function removeAuthCookie() {
 }
 
 export { COOKIE_NAME };
+
+export async function requireAdmin() {
+  const admin = await getCurrentAdmin();
+  return admin;
+}
