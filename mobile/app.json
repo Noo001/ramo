@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "RAMO",
+    "slug": "ramo-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ru.ramo.mobile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Приложение использует камеру для сканирования QR-кодов на столах."
+      }
+    },
+    "android": {
+      "package": "ru.ramo.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#F1DEC5",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["android.permission.CAMERA"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Приложение использует камеру для сканирования QR-кодов на столах."
+        }
+      ]
+    ]
+  }
+}

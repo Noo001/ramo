@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  login        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  phone        String   @unique
+  passwordHash String
+  name         String?
+  points       Int      @default(0)
+  orders       Order[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  sortOrder Int      @default(0)
+  iikoId    String?  @unique
+  dishes    Dish[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Dish {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  description  String?
+  price        Int
+  weight       String?
+  image        String?
+  categoryId   Int
+  category     Category    @relation(fields: [categoryId], references: [id])
+  iikoId       String?     @unique
+  isActive     Boolean     @default(true)
+  isStopListed Boolean     @default(false)
+  orderItems   OrderItem[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum TableZone {
+  HALL1
+  HALL2
+  TERRACE
+}
+
+model Table {
+  id           Int           @id
+  zone         TableZone
+  seats        Int           @default(4)
+  isActive     Boolean       @default(true)
+  orders       Order[]
+  reservations Reservation[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  tableId   Int
+  table     Table    @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  name      String
+  phone     String
+  guests    Int
+  date      String
+  time      String
+  comment   String?
+  status    String   @default("CONFIRMED")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  NEW
+  CONFIRMED
+  READY
+  CLOSED
+  CANCELLED
+}
+
+model Order {
+  id           Int         @id @default(autoincrement())
+  tableId      Int
+  table        Table       @relation(fields: [tableId], references: [id])
+  userId       Int?
+  user         User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status       OrderStatus @default(NEW)
+  total        Int
+  discount     Int         @default(0)
+  finalTotal   Int
+  pointsEarned Int         @default(0)
+  pointsSpent  Int         @default(0)
+  comment      String?
+  items        OrderItem[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  orderId  Int
+  order    Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  dishId   Int
+  dish     Dish  @relation(fields: [dishId], references: [id])
+  quantity Int
+  price    Int
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

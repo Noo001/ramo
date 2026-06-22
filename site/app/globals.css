@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Libertinus Serif";
+  src: url("/fonts/LibertinusSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Libertinus Serif";
+  src: url("/fonts/LibertinusSerif-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "FRB American Cursive";
+  src: url("/fonts/FRBAmericanCursive-400-Regular.otf") format("opentype");
+  font-weight: 400;
+}
+
+:root {
+  --background: #F1DEC5;
+  --background-alt: #F7F3EC;
+  --foreground: #26211F;
+  --accent: #FF8400;
+  --accent-hover: #FFA100;
+  --accent-dark: #602512;
+  --surface: #FFFFFF;
+  --muted: #602512;
+  --border: #EAD8C0;
+  --border-light: #F3E6D5;
+  --green: #749C85;
+  --blue: #67A3E8;
+  --dark-blue: #3C374B;
+  --red: #BE0000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-dark: var(--accent-dark);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-green: var(--green);
+  --color-blue: var(--blue);
+  --color-dark-blue: var(--dark-blue);
+  --color-red: var(--red);
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-serif: "Libertinus Serif", Georgia, serif;
+  --font-display: "FRB American Cursive", "Geist", cursive;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
