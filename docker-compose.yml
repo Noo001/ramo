@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  ramo:
+    build:
+      context: ./site
+      dockerfile: Dockerfile
+    container_name: ramo-site
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=file:./prisma/dev.db
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+    volumes:
+      - ramo-db:/app/prisma
+    networks:
+      - ramo-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: ramo-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - ramo
+    networks:
+      - ramo-network
+
+volumes:
+  ramo-db:
+
+networks:
+  ramo-network:
+    driver: bridge
