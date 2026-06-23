@@ -1,6 +1,24 @@
 version: "3.8"
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ramo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ramo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ramo_password}
+      POSTGRES_DB: ${POSTGRES_DB:-ramo}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - ramo-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ramo} -d ${POSTGRES_DB:-ramo}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   ramo:
     build:
       context: ./site
@@ -10,10 +28,11 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - DATABASE_URL=file:./prisma/dev.db
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-ramo}:${POSTGRES_PASSWORD:-ramo_password}@postgres:5432/${POSTGRES_DB:-ramo}?schema=public
       - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
-    volumes:
-      - ramo-db:/app/prisma
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - ramo-network
 
@@ -33,7 +52,7 @@ services:
       - ramo-network
 
 volumes:
-  ramo-db:
+  postgres-data:
 
 networks:
   ramo-network:

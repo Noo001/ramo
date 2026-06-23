@@ -1,6 +1,6 @@
 # Локальный деплой RAMO
 
-Проект настроен для запуска на локальном сервере через Docker Compose с nginx reverse proxy. Подходит для демонстрации заказчику в локальной сети.
+Проект настроен для запуска на локальном сервере через Docker Compose с PostgreSQL и nginx reverse proxy.
 
 ## Требования
 
@@ -11,7 +11,7 @@
 
 - `site/` — Next.js приложение (фронт + API).
 - `site/Dockerfile` — сборка приложения в standalone-режиме.
-- `docker-compose.yml` — поднимает RAMO + nginx.
+- `docker-compose.yml` — поднимает PostgreSQL + RAMO + nginx.
 - `nginx/` — конфиги nginx для reverse proxy.
 - `nginx/conf.d/second-site.conf.example` — пример добавления второго сайта.
 
@@ -26,7 +26,7 @@
 2. Создай `.env` из примера:
    ```bash
    cp .env.example .env
-   # Отредактируй JWT_SECRET на случайную строку
+   # Отредактируй JWT_SECRET, POSTGRES_USER, POSTGRES_PASSWORD
    ```
 
 3. Запусти:
@@ -66,15 +66,22 @@
 
 ## Переменные окружения
 
-| Переменная    | Описание                              | Значение по умолчанию       |
-|---------------|---------------------------------------|-----------------------------|
-| `JWT_SECRET`  | Секретный ключ для JWT                | `change-me-in-production`   |
-| `NODE_ENV`    | Режим работы                          | `production`                |
-| `DATABASE_URL`| Путь к SQLite                         | `file:./prisma/dev.db`      |
+| Переменная          | Описание                              | Значение по умолчанию       |
+|---------------------|---------------------------------------|-----------------------------|
+| `JWT_SECRET`        | Секретный ключ для JWT                | `change-me-in-production`   |
+| `POSTGRES_USER`     | Пользователь PostgreSQL               | `ramo`                      |
+| `POSTGRES_PASSWORD` | Пароль PostgreSQL                     | `ramo_password`             |
+| `POSTGRES_DB`       | Имя базы данных                       | `ramo`                      |
 
-## Важно про SQLite
+## Важно про базу данных
 
-База данных SQLite хранится в Docker volume `ramo-db`. Данные сохраняются между перезапусками контейнера, но **теряются**, если удалить volume. Для продакшена рекомендуется перейти на PostgreSQL.
+Данные хранятся в Docker volume `postgres-data`. Они сохраняются между перезапусками контейнера, но **теряются**, если удалить volume.
+
+При первом запуске автоматически применяются миграции и запускается seed, который создаёт:
+- администратора;
+- столы;
+- настройки;
+- всё меню из `prisma/seed-data.json`.
 
 ## Обновление после изменений в коде
 
@@ -82,5 +89,3 @@
 git pull
 docker compose up -d --build
 ```
-
-При пересборке база создаётся заново из `prisma/seed.ts`.

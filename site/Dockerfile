@@ -18,11 +18,8 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-ENV DATABASE_URL=file:./prisma/dev.db
 
 RUN npx prisma generate
-RUN npx prisma db push --accept-data-loss
-RUN npx prisma db seed
 RUN npm run build
 
 # Stage 3: runner
@@ -31,7 +28,6 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3000
-ENV DATABASE_URL=file:./prisma/dev.db
 ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY --from=builder /app/public ./public
@@ -42,4 +38,4 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:standalone"]
+CMD sh -c "npx prisma migrate deploy && npx prisma db seed && npm run start:standalone"
