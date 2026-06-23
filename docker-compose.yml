@@ -33,6 +33,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - ramo-uploads:/app/public/images/uploads
     networks:
       - ramo-network
 
@@ -53,6 +55,7 @@ services:
 
 volumes:
   postgres-data:
+  ramo-uploads:
 
 networks:
   ramo-network:

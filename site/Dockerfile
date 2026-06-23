@@ -36,6 +36,8 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
+RUN mkdir -p /app/public/images/uploads
+
 EXPOSE 3000
 
 CMD sh -c "npx prisma migrate deploy && npx prisma db seed && npm run start:standalone"

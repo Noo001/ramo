@@ -342,6 +342,7 @@ function MenuTab({
   showMessage: (text: string) => void;
 }) {
   const [editingDish, setEditingDish] = useState<Dish | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -354,6 +355,7 @@ function MenuTab({
   });
 
   const resetForm = () => {
+    setUploading(false);
     setForm({
       name: "",
       description: "",
@@ -372,6 +374,28 @@ function MenuTab({
       setForm((f) => ({ ...f, categoryId: categories[0].id.toString() }));
     }
   }, [categories]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      const res = await fetch("/api/admin/upload", { method: "POST", body: data });
+      const result = await res.json();
+      if (res.ok) {
+        setForm((f) => ({ ...f, image: result.url }));
+      } else {
+        alert(result.error || "Не удалось загрузить изображение");
+      }
+    } catch {
+      alert("Ошибка загрузки изображения");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -458,12 +482,22 @@ function MenuTab({
             onChange={(e) => setForm({ ...form, weight: e.target.value })}
             className="rounded-xl border border-border px-4 py-3 outline-none focus:border-accent bg-background"
           />
-          <input
-            placeholder="URL изображения"
-            value={form.image}
-            onChange={(e) => setForm({ ...form, image: e.target.value })}
-            className="sm:col-span-2 rounded-xl border border-border px-4 py-3 outline-none focus:border-accent bg-background"
-          />
+          <div className="sm:col-span-2 flex flex-col sm:flex-row gap-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={uploading}
+              className="rounded-xl border border-border px-4 py-3 outline-none focus:border-accent bg-background text-sm file:mr-4 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-white hover:file:bg-accent-dark disabled:opacity-50"
+            />
+            <input
+              placeholder="URL изображения"
+              value={form.image}
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
+              className="flex-1 rounded-xl border border-border px-4 py-3 outline-none focus:border-accent bg-background"
+            />
+          </div>
+          {uploading && <p className="sm:col-span-2 text-sm text-muted">Загрузка...</p>}
           <textarea
             placeholder="Описание"
             value={form.description}
